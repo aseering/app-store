@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block content %}
-{% if app %}
+{% if apps %}
 {% for app in apps %}
 <div class="app_list_elt">
 <span class="app_title">{{ app.name }}</span>
-<span class="app_desc">{{ app.description}}</span>
-<span class="app_url"><a href="URL">{{ app.app.url }}</span>
+<span class="app_desc">{{ app.description }}</span>
+<span class="app_url"><a href="{{ app.app.url }}">{{ app.app.url }}</a></span>
 </div>
 {% endfor %}
 {% else %}

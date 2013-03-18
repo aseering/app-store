@@ -9,5 +9,6 @@ setup(
       author_email="aseering@vertica.com",
       packages=find_packages(),
       install_requires=['django>=1.4',
+                        'PIP',
                         'django-userena'],
 )
