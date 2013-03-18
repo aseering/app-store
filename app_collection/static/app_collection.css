@@ -1,0 +1,59 @@
+body {
+    background-color: #cde;
+    font-family: sans-serif;
+}
+
+#content_wrapper {
+    padding: 40px;
+}
+#content {
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;
+
+    -moz-box-shadow: 0px 0px 12px #000;
+    -webkit-box-shadow: 0px 0px 12px #000;
+    -khtml-box-shadow: 0px 0px 12px #000;
+    box-shadow: 0px 0px 12px #000;
+
+    background-color: #fff;
+    padding: 35px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+}
+
+hr {
+    margin-bottom: 40px;
+}
+
+vr {
+    border-left: 1px solid #000;
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 10px;
+}
+
+.infobox {
+    background-color: #ff9;
+    border: 1px solid black;
+    padding: 15px;
+    margin: 10px auto;
+    
+    width: 40%;
+
+    background-image: url(/static/warning2.png);
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 68px;
+    min-height: 36px;
+
+    font-family: monospace;
+    font-size: 15pt;
+}
+

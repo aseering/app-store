@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+
+{% block title %}App List{% endblock %}
+
+{% block pagetitle %}
+<h1>Apps</h1>
+{% endblock %}
+
+{% block content %}
+{% if app %}
+{% for app in apps %}
+<div class="app_list_elt">
+<span class="app_title">{{ app.name }}</span>
+<span class="app_desc">{{ app.description}}</span>
+<span class="app_url"><a href="URL">{{ app.app.url }}</span>
+</div>
+{% endfor %}
+{% else %}
+<p class="infobox">No apps currently available</p>
+{% endif %}
+{% endblock %}

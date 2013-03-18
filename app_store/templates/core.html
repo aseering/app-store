@@ -1,0 +1,14 @@
+{% load staticfiles %}
+<html>
+<head>
+<title>{% block title %}App Store{% endblock %}</title>
+<link rel="stylesheet" href="{% static "app_collection.css" %}" type="text/css" />
+</head>
+<body>
+<div id="content_wrapper">
+<div id="content">
+{% block core_content %}{% endblock %}
+</div>
+</div>
+</body>
+</html>
