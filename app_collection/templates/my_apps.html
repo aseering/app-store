@@ -1,0 +1,23 @@
+{% extends "main.html" %}
+
+{% block title %}App List{% endblock %}
+
+{% block pagetitle %}
+<h1>My Apps</h1>
+{% endblock %}
+
+{% block content %}
+{% if apps %}
+{% for app in apps %}
+<div class="app_list_elt">
+<span class="app_title">{{ app.name }}</span>
+<span class="app_desc">{{ app.description}}</span>
+<span class="app_url"><a href="{{ app.app.url }}">{{ app.app.url }}</a></span>
+<span class="app_status">{{ app.status }}</span>
+</div>
+{% endfor %}
+<div class="app_list_upload">Click <a href="{% url "apps/submit" %}">here</a> to submit another app.</div>
+{% else %}
+<p class="infobox">No apps currently submitted.  Click <a href="{% url "apps/submit" %}">here</a> to submit an app.</p>
+{% endif %}
+{% endblock %}
