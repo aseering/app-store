@@ -26,6 +26,10 @@ class App(models.Model):
     name = models.CharField(max_length=64, unique=True)
     shortname = models.CharField(max_length=64, unique=True)
     description = models.TextField()
+
+    setup_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
+    remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
+
     app = models.FileField(upload_to=app_upload_path_name)
     status = models.CharField(max_length=8,
                               choices=statuses,
