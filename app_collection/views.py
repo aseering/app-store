@@ -35,7 +35,6 @@ def show_app(request, app_name):
                   {'app': app})
 
 @json_response
-@login_required
 def show_app_json(request, app_name):
     app = get_object_or_404(App.objects.select_related('submitter'),
                             shortname=app_name)
