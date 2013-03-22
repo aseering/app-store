@@ -30,6 +30,23 @@ class App(models.Model):
     status = models.CharField(max_length=8,
                               choices=statuses,
                               default=statuses.PENDING)
+    
+    github_account = models.CharField(max_length=64,
+                                      help_text="i.e., http://github.com/<i><b>account</b></i>/<i>project</i>")
+    github_project = models.CharField(max_length=64,
+                                      help_text="i.e., http://github.com/<i>account</i>/<i><b>project</b></i>")
+
+    @property
+    def github_url(self):
+        return "https://github.com/%s/%s" % (github_account, github_project)
+    
+    @property
+    def github_readme(self):
+        return "https://raw.github.com/%s/%s/master/README.txt" % (github_account, github_project)
+
+    @property
+    def github_zip(self):
+        return "https://github.com/%s/%s/archive/master.zip" % (github_account, github_project)
 
     def __unicode__(self):
         return "<App: %s>" % self.name

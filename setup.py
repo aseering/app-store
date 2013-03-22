@@ -6,7 +6,7 @@ setup(
       version=0.5,
       description="App Store for Vertica",
       author="Adam Seering",
-      author_email="aseering@vertica.com",
+      author_email="aseering@gmail.com",
       packages=find_packages(),
       install_requires=['django>=1.4',
                         'PIP',
