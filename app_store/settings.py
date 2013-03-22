@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'accounts',
     'userena',
     'guardian',
+    'south',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
