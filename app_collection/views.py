@@ -19,6 +19,8 @@ def list_apps_json(request):
                 'name',
                 'shortname',
                 'description',
+                'setup_sql',
+                'remove_sql',
                 'github_account',
                 'github_project',
                 'app',
@@ -28,15 +30,15 @@ def list_apps_json(request):
                                                         
 
 def show_app(request, app_name):
-    app = get_object_or_404(App, name=app_name)
+    app = get_object_or_404(App, shortname=app_name)
     return render(request, 'show_app.html',
                   {'app': app})
 
 @json_response
 @login_required
 def show_app_json(request, app_name):
-    app = get_object_or_404(App.models.select_related('submitter'),
-                            name=app_name)
+    app = get_object_or_404(App.objects.select_related('submitter'),
+                            shortname=app_name)
     return {'submission_date': app.submission_date,
             'last_updated_date': app.last_updated_date,
             'name': app.name,
@@ -44,6 +46,8 @@ def show_app_json(request, app_name):
             'description': app.description,
             'status': app.status,
             'description': app.description,
+            'setup_sql': app.setup_sql,
+            'remove_sql': app.remove_sql,
             'github_account': app.github_account,
             'github_project': app.github_project,
             'app': app.app,
