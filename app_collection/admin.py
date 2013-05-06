@@ -1,4 +1,5 @@
 from django.contrib import admin
-from app_collection.models import App
+from app_collection.models import App, AppInstance, ApiVersion
 
-admin.site.register(App)
+for m in (App, AppInstance, ApiVersion):
+    admin.site.register(m)

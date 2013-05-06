@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+
+{% block title %}App List{% endblock %}
+
+{% block pagetitle %}
+<h1>Submit a New App</h1>
+{% endblock %}
+
+{% block content %}
+<div class="app_submit_form">
+<form action="." method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" />
+</form>
+</div>
+{% endblock %}

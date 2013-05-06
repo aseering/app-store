@@ -9,11 +9,11 @@
 {% block content %}
 {% if apps %}
 {% for app in apps %}
-<div class="app_list_elt">
-<span class="app_title">{{ app.name }}</span>
-<span class="app_desc">{{ app.description }}</span>
-<span class="app_url"><a href="{{ app.app.url }}">{{ app.app.url }}</a></span>
-</div>
+<ul class="app_list_elt">
+<li class="app_title">{{ app.name }}</li>
+<li class="app_desc">{{ app.description }}</li>
+<ul>{% for inst in app.appinstance_set.all %}<li class="app_url"><a href="{{ inst.so_file.url }}">{{ inst.api_version.brand_version }}</a></li>{% endfor %}</ul>
+</ul>
 {% endfor %}
 {% else %}
 <p class="infobox">No apps currently available</p>

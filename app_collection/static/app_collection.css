@@ -34,7 +34,7 @@ hr {
 vr {
     border-left: 1px solid #000;
     display: inline-block;
-    height: 100%;
+    height: 30px;
     overflow: hidden;
     margin: 0 10px;
 }

@@ -27,10 +27,6 @@ class App(models.Model):
     shortname = models.CharField(max_length=64, unique=True)
     description = models.TextField()
 
-    setup_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
-    remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
-
-    app = models.FileField(upload_to=app_upload_path_name)
     status = models.CharField(max_length=8,
                               choices=statuses,
                               default=statuses.PENDING)
@@ -53,4 +49,25 @@ class App(models.Model):
         return "https://github.com/%s/%s/archive/master.zip" % (github_account, github_project)
 
     def __unicode__(self):
-        return "<App: %s>" % self.name
+        return self.name
+
+class ApiVersion(models.Model):
+    ## TODO: Should be distinct on ( ... well, everything)
+    brand_version = models.CharField(max_length=32)
+    sdk_version = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.brand_version
+
+class AppInstance(models.Model):
+    ## TODO: Should be distinct on (app, api_version)
+    app = models.ForeignKey(App)
+    api_version = models.ForeignKey(ApiVersion)
+
+    setup_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
+    remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
+
+    so_file = models.FileField(upload_to=app_upload_path_name)
+
+    def __unicode__(self):
+        return "%s: %s" % (self.app.name, self.api_version.sdk_version)

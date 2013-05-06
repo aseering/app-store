@@ -1,0 +1,17 @@
+{% extends "core.html" %}
+
+{% block title %}App Store{% endblock %}
+
+{% block core_content %}
+<h1>VerticApp</h1>
+
+<table style="display: block; width: 100%;"><tr>
+<td style="text-align: center">
+<a href="{% url list_apps %}">Search</a>
+</td>
+<td style="text-align: center">
+<a href="{% url apps/my %}">Upload</a>
+</td>
+</tr></table>
+
+{% endblock %}
