@@ -68,6 +68,7 @@ class AppInstance(models.Model):
     remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
 
     so_file = models.FileField(upload_to=app_upload_path_name)
+    tarball = models.FileField(upload_to=app_upload_path_name, blank=True, null=True)
 
     def __unicode__(self):
         return "%s: %s" % (self.app.name, self.api_version.sdk_version)

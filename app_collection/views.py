@@ -29,6 +29,7 @@ def list_apps_json(request):
                                       {'setup_sql': inst.setup_sql,
                                        'remove_sql': inst.remove_sql,
                                        'so_file': inst.so_file,
+                                       'tarball': inst.tarball,
                                        'sdk_version': inst.api_version.sdk_version,
                                        'brand_version': inst.api_version.brand_version})
                                  for inst in app.appinstance_set.all()) 
@@ -56,6 +57,7 @@ def show_app_json(request, app_name):
                                      {'setup_sql': inst.setup_sql,
                                       'remove_sql': inst.remove_sql,
                                       'so_file': inst.so_file,
+                                      'tarball': inst.tarball,
                                       'sdk_version': inst.api_version.sdk_version,
                                       'brand_version': inst.api_version.brand_version})
                                     for inst in app.appinstance_set.all()),

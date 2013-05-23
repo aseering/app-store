@@ -7,9 +7,13 @@ import os, sys
 import subprocess
 import json
 import re
+import random
+
+## Unique id for this session
+## Can't run two instances of some commands with the same session ID safely at once
+VERTICAPP_SESSION_ID = "%d_%d" % (os.getpid(), random.randint(1,1000000000))
 
 SERVER = os.environ.get('VERTICAPP_SERVER')
-
 if not SERVER:
     print "Please set the VERTICAPP_SERVER environment variable to point at your VerticApps server"
     print "For example, 'export VERTICAPP_SERVER=http://localhost:8000/'"
@@ -114,6 +118,13 @@ def download_progressbar(url, path):
 
 ## end of http://stackoverflow.com/questions/22676/how-do-i-download-a-file-over-http-using-python }}}
 
+## Generic utility functions
+def sql_str_escape(st):
+    return st.replace("'", "''")
+
+
+## Actual execution logic
+
 def main():
     parser = argparse.ArgumentParser(description="Install Vertica UDx's from the unofficial verticapps repository")
 
@@ -149,13 +160,24 @@ def main():
         print >>sys.stderr, "Use --help for more information"
 
 def install(args):
-    url = INFO_TEMPLATE % args.install
-    info_json_f = urllib2.urlopen(url)
+    install_impl(args.install)
+
+def install_impl(app_slug):
+    url = INFO_TEMPLATE % app_slug
+
+    try:
+        info_json_f = urllib2.urlopen(url)
+    except:
+        print >>sys.stderr, "Can't find application '%s'" % app_slug
+        print >>sys.stderr, "Tried URL: %s" % url
+        sys.exit(0)
+
     app_info = None
     try:
         app_info = json.load(info_json_f)
     except Exception, e:
-        print >>sys.stderr, "Can't find applicaion '%s'" % args.install
+        print >>sys.stderr, "Can't find data for application '%s'" % app_slug
+        sys.exit(0)
         
     print "App:", app_info['name']
     print app_info['description']
@@ -165,17 +187,50 @@ def install(args):
         sys.exit(0)
 
     if not SERVER_VERSION in app_info['appinstance_set'].keys():
-        print "Server version '%s' not found in key-set [%s] for app %s.  Can't install." % (SERVER_VERSION, ", ".join(app_info['appinstance_set'].keys()), app_info['name'])
+        print "Server API version '%s' not found in supported-version list [%s] for app %s.  Can't install." % (SERVER_VERSION, ", ".join(app_info['appinstance_set'].keys()), app_info['name'])
         sys.exit(0)
 
-    url = SERVER + "media/" + app_info['appinstance_set'][SERVER_VERSION]['so_file']
-    
+    has_tarball = False
+    if app_info['appinstance_set'][SERVER_VERSION]['tarball']:
+        has_tarball = True
+        print "App has associated helper files; downloading shell_package as a dependency..."
+        install_impl('shell-package')
+
+    so_url = SERVER + "media/" + app_info['appinstance_set'][SERVER_VERSION]['so_file']
+    if has_tarball:
+        tar_url = SERVER + "media/" + app_info['appinstance_set'][SERVER_VERSION]['tarball']
+
     tmpdir = tempfile.mkdtemp()
     setup_sql_file = os.path.join(tmpdir, "setup.sql")
     
-    inst_file = download_progressbar(url, tmpdir)
+    inst_file = download_progressbar(so_url, tmpdir)
+    if has_tarball:
+        tarball_file = download_progressbar(tar_url, tmpdir)
+        # HACK:  Hex-encode the tarball file so we can load it with the stock loader
+        tarball_hexenc_file = tarball_file + ".hexcsv"
+        hexencode_file(tarball_file, tarball_hexenc_file)
+            
     with open(setup_sql_file, "w") as f:
         f.write("\\set libfile '\\'%s\\''\n" % inst_file.replace("'", "''"))
+        f.write("CREATE SCHEMA verticapp;  -- May already exist; this is ok\n")
+        f.write("CREATE TABLE IF NOT EXISTS verticapp.installed_apps (name VARCHAR, shortname VARCHAR, description VARCHAR(8192), github_url VARCHAR(512), setup_sql VARCHAR(65000), remove_sql VARCHAR(65000));\n")
+        f.write("INSERT INTO verticapp.installed_apps VALUES ('%s', '%s', '%s', '%s', '%s', '%s');\n" \
+                % tuple(map(sql_str_escape, 
+                            [app_info['name'], app_info['shortname'], app_info['description'],
+                             "http://github.com/%s/%s/" % (app_info['github_account'],
+                                                           app_info['github_project']), 
+                             app_info['appinstance_set'][SERVER_VERSION]['setup_sql'],
+                             app_info['appinstance_set'][SERVER_VERSION]['remove_sql']])))
+        f.write("\n")
+
+        if has_tarball:
+            f.write("-- Install the tarball first\n")
+            f.write("CREATE TABLE verticapp.tmp_install_%s (id IDENTITY, data VARBINARY(32500)) UNSEGMENTED ALL NODES;  -- Should not already exist\n" % VERTICAPP_SESSION_ID)
+            f.write("COPY verticapp.tmp_install_%s (data_filler FILLER VARCHAR(65000), data AS HEX_TO_BINARY(data_filler)) FROM '%s' NO ESCAPE;\n" % (VERTICAPP_SESSION_ID, tarball_hexenc_file.replace("'", "''")))
+            f.write("SELECT shell_execute_binary(data USING PARAMETERS cmd='mkdir -p /opt/vertica/config/verticapp/%s && tar xzvC /opt/vertica/config/verticapp/%s') OVER (PARTITION BY segval ORDER BY id) FROM verticapp.tmp_install_%s, onallnodes;\n" % (app_info['shortname'], app_info['shortname'], VERTICAPP_SESSION_ID))
+            f.write("DROP TABLE verticapp.tmp_install_%s;\n" % VERTICAPP_SESSION_ID)
+            f.write("\n")
+
         f.write(app_info['appinstance_set'][SERVER_VERSION]['setup_sql'])
 
     print "Downloaded!  Running installation through vsql..."
@@ -188,6 +243,19 @@ def install(args):
     else:
         print "vsql reported an error.  Please see the above output for details."
         print "Setup script and UDx .so file are in [%s]." % tmpdir
+
+def hexencode_file(src, dest):
+    READ_SIZE = 65000/2  ## We're doubling the string size
+    with open(src, "r") as src_file:
+        with open(dest, "w") as dest_file:
+            while True:
+                data = src_file.read(READ_SIZE)
+                if data:
+                    data = data.encode('hex')
+                    dest_file.write(data + '\n')
+                else:
+                    break
+                
 
 def remove(args):
     url = INFO_TEMPLATE % args.remove
