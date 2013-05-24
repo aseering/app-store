@@ -62,12 +62,12 @@ class ApiVersion(models.Model):
 class AppInstance(models.Model):
     ## TODO: Should be distinct on (app, api_version)
     app = models.ForeignKey(App)
-    api_version = models.ForeignKey(ApiVersion)
+    api_version = models.ForeignKey(ApiVersion, verbose_name="API version")
 
-    setup_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
-    remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"')
+    setup_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"', verbose_name="Setup SQL")
+    remove_sql = models.TextField(help_text='Installer script will prepend "\set libfile \'/path/to/your/App.so\'"', verbose_name="Remove SQL")
 
-    so_file = models.FileField(upload_to=app_upload_path_name)
+    so_file = models.FileField(upload_to=app_upload_path_name, verbose_name=".so file")
     tarball = models.FileField(upload_to=app_upload_path_name, blank=True, null=True)
 
     def __unicode__(self):

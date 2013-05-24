@@ -1,16 +1,21 @@
 {% extends "main.html" %}
+{% load staticfiles %}
 
-{% block title %}App List{% endblock %}
+{% block title %}Submit a New App{% endblock %}
 
 {% block pagetitle %}
-<h1>Submit a New App</h1>
+<h1><img src="{% static "Sailor_monkey.png" %}" />Submit a New App</h1>
 {% endblock %}
 
 {% block content %}
+asdf
+asdf
 <div class="app_submit_form">
 <form action="." method="post" enctype="multipart/form-data">
 {% csrf_token %}
-{{ form.as_p }}
+<table class="form_table">
+{{ form.as_table }}
+</table>
 <input type="submit" />
 </form>
 </div>

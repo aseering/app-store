@@ -86,3 +86,20 @@ table.app_stats {
 .foot_clear {
     clear: both;
 }
+
+.app_status.ACCEPTED {
+    color: #0C0;
+}
+
+.app_status.PENDING {
+    color: #C00;
+}
+
+.form_table {
+    border-spacing: 7px;
+}
+
+.helptext {
+    font-size: 0.8em;
+    color: #AAA;
+}

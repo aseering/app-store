@@ -1,20 +1,21 @@
 {% extends "main.html" %}
+{% load staticfiles %}
 
 {% block title %}App List{% endblock %}
 
 {% block pagetitle %}
-<h1>My Apps</h1>
+<h1><img src="{% static "Sailor_monkey.png" %}" />My Apps</h1>
 {% endblock %}
 
 {% block content %}
 {% if apps %}
 {% for app in apps %}
-<div class="app_list_elt">
-<span class="app_title">{{ app.name }}</span>
-<span class="app_desc">{{ app.description}}</span>
-<span class="app_url"><a href="{{ app.app.url }}">{{ app.app.url }}</a></span>
-<span class="app_status">{{ app.status }}</span>
-</div>
+<ul class="app_list_elt">
+<li class="app_title">{{ app.name }}</span>
+<li class="app_desc">{{ app.description}}</span>
+<li class="app_status {{ app.status }}">{{ app.status }}</span>
+<li class="app_instances"><ul>{% for inst in app.appinstance_set.all %}<li>{{ inst.api_version.brand_version }}</li>{% endfor %}<li><a href="{% url apps/submit_instance %}">New</a></ul>
+</ul>
 {% endfor %}
 <div class="app_list_upload">Click <a href="{% url apps/submit %}">here</a> to submit another app.</div>
 {% else %}
