@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans "Signup almost done!" %}{% endblock %}
+
+{% block pagetitle %}<h1><img src="{% static "Sailor_monkey.png" %}" />{% trans "Signup" %}</h1>{% endblock %}
+
+{% block content %}
+<p>{% trans "Thank you for signing up with us!" %}</p>
+
+{% if userena_activation_required %}
+<p>{% blocktrans %}You have been sent an e-mail with an activation link to the supplied email.{% endblocktrans %}</p>
+<p>{% blocktrans %}We will store your signup information for {{ userena_activation_days }} days on our server. {% endblocktrans %}</p>
+{% else  %}
+<p>{% blocktrans %}You can now use the supplied credentials to signin.{% endblocktrans %}</p>
+{% endif %}
+{% endblock %}
