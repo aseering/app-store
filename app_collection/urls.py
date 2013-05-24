@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^submit/', submit_app, {}, "apps/submit"),
     url(r'^submit_instance/', submit_instance, {}, "apps/submit_instance"),
     url(r'^my', my_apps, {}, "apps/my"),
-    url(r'^(?P<app_name>[\w-]+)/$', show_app),
+    url(r'^(?P<app_name>[\w-]+)/$', show_app, {}, "apps/show_app"),
     url(r'^(?P<app_name>[\w-]+)/app.json', show_app_json),
 )

@@ -9,7 +9,7 @@ from utils.json_response import json_response
 
 def list_apps(request):
     return render(request, 'list_apps.html',
-                  {'apps': App.objects.filter(status="ACCEPTED").select_related('submitter').prefetch_related('appinstance_set').prefetch_related('appinstance_set__app')})
+                  {'apps': App.objects.filter(status="ACCEPTED").select_related('submitter').prefetch_related('appinstance_set').prefetch_related('appinstance_set__app').order_by('name')})
 
 @json_response
 def list_apps_json(request):

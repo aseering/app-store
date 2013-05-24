@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% load staticfiles %}
+
+{% block title %}{{ app.name }}{% endblock %}
+
+{% block pagetitle %}
+<h1><img src="{% static "Sailor_monkey.png" %}" />App: {{ app.name }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="app_desc">
+{{ app.description }}
+</div>
+
+<table class="app_stats">
+<tr><th>Submitter:</th><td>{{ app.submitter.first_name }} {{ app.submitter.last_name }}</td></tr>
+{% if app.github_account and app.github_project %}<tr><th>Github URL:</th><td><a href="{{ app.github_url }}">{{ app.github_url }}</a></td></tr>{% endif %}
+{% for inst in app.appinstance_set.all %}
+<tr><th>Vertica {{ inst.api_version.brand_version }}:</th><td><a href="{{ inst.so_file }}">.so</a>{% if inst.tarball %} <a href="{{ inst.tarball }}">.tar.gz</a>{% endif %}</td></tr>
+</table>
+
+<div class="foot_clear"></div>
+{% endfor %}
+{% endblock %}

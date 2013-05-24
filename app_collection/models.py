@@ -38,7 +38,7 @@ class App(models.Model):
 
     @property
     def github_url(self):
-        return "https://github.com/%s/%s" % (github_account, github_project)
+        return "https://github.com/%s/%s" % (self.github_account, self.github_project)
     
     @property
     def github_readme(self):

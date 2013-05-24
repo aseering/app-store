@@ -1,16 +1,22 @@
 {% extends "core.html" %}
+{% load staticfiles %}
 
 {% block title %}App Store{% endblock %}
 
 {% block core_content %}
-<h1>VerticApp</h1>
+<h1><img src="{% static "Sailor_monkey.png" %}" />VertiCapps</h1>
 
 <table style="display: block; width: 100%;"><tr>
 <td style="text-align: center">
-<a href="{% url list_apps %}">Search</a>
+<a href="{% url list_apps %}"><img src="{% static "homepage/Magnifying_Glass.png" %}" /><br />
+Search
+</a>
 </td>
 <td style="text-align: center">
-<a href="{% url apps/my %}">Upload</a>
+<a href="{% url apps/my %}">
+<img src="{% static "homepage/upload.png" %}" /><br />
+Upload
+</a>
 </td>
 </tr></table>
 

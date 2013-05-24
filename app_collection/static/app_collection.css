@@ -57,3 +57,32 @@ vr {
     font-size: 15pt;
 }
 
+ul.app_list_elt {
+    list-style-type: none;
+    padding-bottom: 1.5em;
+}
+ul.app_desc_elt {
+    list-style-type: none;
+}
+
+ul li.app_title {
+    font-size: 1.5em;
+}
+ul li.app_desc {
+    white-space: pre-wrap;
+}
+
+table.app_stats {
+    float: right;
+}
+
+.app_stats {
+    border-spacing: 3px;
+}
+.app_stats tr th {
+    text-align: right;
+}
+
+.foot_clear {
+    clear: both;
+}
