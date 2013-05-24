@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}Download VertiCapp.py{% endblock %}
+
+{% block pagetitle %}
+<h1><img src="{% static "Sailor_monkey.png" %}" />Download VertiCapp.py</h1>
+{% endblock %}
+
+{% block content %}
+
+<p>
+The VertiCapp.py script is a Linux Python script, intended to run on the computer(s) in your Vertica cluster.  It will connect to Vertica and install, remove, etc., user-defined functions as requested.  Think of it like a package manager for Vertica.
+</p>
+
+<p>
+Run "python verticapp.py --help" for usage information.
+</p>
+
+<p>
+<a href="{% static "verticapp.py" %}"><img src="{% static "download_button.png" %}"> Download verticapp.py</a>
+</p>
+
+{% endblock %}

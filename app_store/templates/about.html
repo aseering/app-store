@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}About VertiCapp{% endblock %}
+
+{% block pagetitle %}
+<h1><img src="{% static "Sailor_monkey.png" %}" />About VertiCapp</h1>
+{% endblock %}
+
+{% block content %}
+<p>
+<b>VertiCapp</b> is an community application repository for the <a href="http://www.vertica.com/">Vertica</a> database system.
+</p>
+
+<p>
+<b>Vertica</b> is an analytic SQL database designed for large, distributed queries.  It's free for use up to 1 Terabyte of data.  (Downloads <a href="http://my.vertica.com/">here</a>; sign up for a free Community account first.)
+</p>
+
+<p>
+<b>Vertica</b> is highly extensible.  It has a plugin architecture that allows anyone to implement new database operators, add new parse formats, even connect to other database systems.  But installing plugins can be a pain.
+</p>
+
+<p>
+<b>That's</b> where VertiCapps comes in.  It provides a one-click (well, ok, one-command-line-command) installer for Vertica applications.
+</p>
+
+<p>
+<b>Why VertiCapp?</b>  Well, it used to be VerticApp.  But that's hard to say.  Then I found a picture of a monkey with a funky cap.  So, VertiCapp.
+</p>
+
+{% endblock %}
