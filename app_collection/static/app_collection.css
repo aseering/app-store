@@ -103,3 +103,11 @@ table.app_stats {
     font-size: 0.8em;
     color: #AAA;
 }
+
+.app_title_more {
+    font-size: 0.7em;
+}
+
+#searchbox {
+    float: right;
+}

@@ -1,6 +1,10 @@
 {% extends "main.html" %}
 {% load staticfiles %}
 
+{% block css_js %}
+<script src="{% static "searchbox.js" %}" language="javascript"></script>
+{% endblock %}
+
 {% block title %}App List{% endblock %}
 
 {% block pagetitle %}
@@ -8,11 +12,16 @@
 {% endblock %}
 
 {% block content %}
+
+<div id="searchbox">
+<input id="search_field" /><input id="search_btn" type="button" value="Go!" />
+</div>
+
 {% if apps %}
 {% for app in apps %}
-<ul class="app_list_elt">
-<li class="app_title"><a href="{% url apps/show_app app.shortname %}">{{ app.name }}</a></li>
-<li class="app_desc">{{ app.description }}</li>
+<ul class="app_list_elt accordion" id="id_app_list_elt">
+<li class="app_title accordion-heading"><a href="{% url apps/show_app app.shortname %}">{{ app.name }}</a> <span class="app_title_more">(<a href="#app_{{ app.id }}" data-toggle="collapse" data-parent="#id_app_list_elt">more</a>)</span></li>
+<li class="app_desc accordion-body collapse" id="app_{{ app.id }}"><div class="accordion-inner">{{ app.description }}</div></li>
 </ul>
 {% endfor %}
 {% else %}
